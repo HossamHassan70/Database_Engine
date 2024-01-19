@@ -10,7 +10,8 @@ fi
 echo -e "\e[95mHello From Our Database Engine Enjoy..\e[0m"
 PS3="Type Your Selection: "
 
-select option in "Create Database" "List Databases" "Connect to Database" "Remove Database" "Exit"; do
+select option in "Create Database" "List Databases" "Connect to Database" "Remove Database" "Exit"; 
+do
     case $REPLY in
     1)
         clear
