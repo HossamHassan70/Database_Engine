@@ -4,10 +4,14 @@
 #starts with a letter, followed by letters, digits, or underscores
 regex="^[a-zA-Z][a-zA-Z0-9_]*$"
 
-while true
+while true #condtion to exit the loop (return to table menu)
 do 
+    echo "Press '0' To go back"
+    if [[ $name == '0' ]]; then
+        . table-menu.sh
+    fi
     # Prompt user to enter a table name
-    echo "Enter the name of the table you want to create: " 
+    echo "Enter The Name of New Table : " 
     read name
     #check if a file with the entered name already exist
     if [ -f "$name" ]
@@ -119,22 +123,22 @@ echo "Metadata of your table is: $rowtype"
 # Validate primary key 
 while true
 do
-    echo "Do you want to make $pk_column as the primary key? (yes/no): "
+    echo "Do you want to make $pk_column as the primary key? (y/n): "
     read primary_key_choice
 
     case $primary_key_choice in
-        yes) 
+        [yY]) 
             #add primary key in the table (unique)
             echo "$pk_column:integer:unique" >> "$name"
             echo "Primary key added successfully :)"
             break
             ;;
-        no)
+        [nN])
             echo "Primary key does not added."
             break
             ;;
         *)
-            echo "Invalid choice. Please enter 'yes' or 'no'."
+            echo "Invalid choice. Please enter 'y' or 'n'."
             ;;
     esac
 done

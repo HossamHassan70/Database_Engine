@@ -7,10 +7,10 @@ if [[ ! -d "DB" ]]; then
     mkdir "./DB"
 fi
 
-echo -e "\e[95mHello From Our Database Engine Enjoy..\e[0m"
+echo -e "\e[95mHello From Our Database Engine, Enjoy..\e[0m"
 PS3="Type Your Selection: "
 
-select option in "Create Database" "List Databases" "Connect to Database" "Remove Database" "Exit"; 
+select option in "Create Database" "List Databases" "Connect to Database" "Drop Database" "Exit"; 
 do
     case $REPLY in
     1)
@@ -35,9 +35,11 @@ do
                 else
                     mkdir "$database_path"
                     echo -e "\e[92m[$name] Database Created Successfully.\e[0m"
+                    echo -e "\e[92m Conected to [$name] Database ...\e[0m"
                     cd $database_path
-                    PS3="$database_path > "
+                    # echo $database_path
                     . table-menu.sh
+                    PS3="$database_path > "
                 fi
             else
                 echo -e "\e[91mError: Please enter a valid name (should be more than one character)\e[0m"
@@ -75,13 +77,13 @@ do
             ls -F DB | grep / | tr '/' ' '
         fi
         echo -e "\e[34m---------------------------------------------------------------\e[0m"
-        read -p "Enter a Database Name To Connect (or '0' to return): " name
+        read -p "Enter a Database Name To Connect (or '0' to back): " name
         if [[ $name == "0" ]]; then
             clear
             . main-menu.sh
         fi
         if [[ -d DB/$name ]]; then
-            echo -e "\e[92mConnected to\e[0m \e[93m[$name]\e[0m \e[92mDatabase\e[0m"
+            echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
             . table-menu.sh $name
         else
             echo -e "\e[91mError: Database is not found.\e[0m"
@@ -90,7 +92,7 @@ do
         ;;
     4)
         clear
-        echo -e "\e[34m-------------------------Remove Database----------------------\e[0m"
+        echo -e "\e[34m-------------------------Drop Database----------------------\e[0m"
         if [ -z "$(ls -A DB)" ]; then
             echo -e "\e[93mThere are No Databases Available Right Now ...\e[0m"
             . main-menu.sh
@@ -119,7 +121,6 @@ do
             . main-menu.sh
         ;;
     5)
-        echo -e "\e[90mExiting...\e[0m"
         echo -e "\e[93mSee You Later ..\e[0m"
         exit 1
         ;;

@@ -1,6 +1,9 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-PS3='$1 >' 
+YELLOW=$'\e[1;33m'
+defaultcolor=$'\e[0m'
+PS3="$YELLOW$1$defaultcolor >"
+
 echo "Enter Your choice From The Menu: "
 select choice in Create-table List-tables Drop-table Insert-in-table Select-from-table Update-table Remove-from-table Back
 do
