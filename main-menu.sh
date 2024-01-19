@@ -37,9 +37,7 @@ do
                     echo -e "\e[92m[$name] Database Created Successfully.\e[0m"
                     echo -e "\e[92m Conected to [$name] Database ...\e[0m"
                     cd $database_path
-                    # echo $database_path
-                    . table-menu.sh
-                    PS3="$database_path > "
+                    . table-menu.sh $name
                 fi
             else
                 echo -e "\e[91mError: Please enter a valid name (should be more than one character)\e[0m"

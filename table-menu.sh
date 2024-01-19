@@ -10,7 +10,7 @@ do
    case $REPLY in
       1)
       echo "You can create table now"
-      . create-table.sh
+      . create-table.sh 
       ;;
       2)
       echo "You can listing tables now"
