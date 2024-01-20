@@ -26,10 +26,25 @@ databases, tabels, remove database, tables ...
 - **Data Storage:** Persistent storage of data in simple text files.
 - **CRUD Operations:** Basic support for Create, Read, Update, and Delete operations.
 - **Query Language:** Simple query language for retrieving data.
+- **main-menu.sh file**
+    * Create DB Handling 
+    * List DB Handling
+    * Remove DB Handling
+    * Connect to DB Handling
+- **table-menu.sh file**
+    Direction to All another files of table operation
 
 ## Getting Started
 
 Follow these instructions to get the project up and running on your local machine.
+
+## Contributors:
+* **[Hossam Hassan]**(https://github.com/HossamHassan70)
+* **[Amany Abdelrahman]**(https://github.com/amany-abdelrahman)
+
+## References:-
+1- https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+2- https://en.wikipedia.org/wiki/ANSI_escape_code
 
 
 ### Installation
@@ -40,20 +55,3 @@ Clone the repository and navigate to the project directory:
 $ git clone https://github.com/HossamHassan70/Database_Engine.git
 $ cd Database_Engine
 $ ./main-menu.sh
-
-
-- main-menu.sh file
-    * Create DB Handling 
-    * List DB Handling
-    * Remove DB Handling
-    * Connect to DB Handling
-- table-menu.sh file
-    Direction to All another files of table operation
-
-## Contributors:
-* [Hossam Hassan](https://github.com/HossamHassan70)
-* [Amany Abdelrahman](https://github.com/amany-abdelrahman)
-
-## References:-
-1- https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
-2- https://en.wikipedia.org/wiki/ANSI_escape_code
