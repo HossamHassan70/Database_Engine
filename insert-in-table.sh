@@ -1,62 +1,71 @@
 #!/usr/bin/bash
-validation_table_name() {
-    while true
-    do
-        echo -e "\e[34m---------------------- Tables List -------------------------\e[0m"
-        ls -p | grep -v / 
-        echo -e "\e[34m------------------------------------------------------------\e[0m"
-        echo "Enter the name of the table you want to insert data into: "
-        read name
-        if [ -f "$name" ]
-        then
-            break
-        else
-            echo "Table $name does not exist. Please enter an existing table name."
-        fi
-    done
-}
-clear
-get_metadata() {
-    local columns=$(head -n 1 "$name")
-    read -a col_array <<< "$(echo $columns | tr ',' ' ')"
-    for col in "${col_array[@]}"
-    do
-        echo "$col"
-    done
-}
-validation_table_name
 
-echo "Columns in the table $name are:"
-metadata=($(get_metadata))
-declare -a col_types=("integer" "string")
-for ((i=0; i<${#metadata[@]}; i++))
-do 
-    echo "${metadata[$i]}"
-done
-while true
-do
-    entry_values=()
-    for ((i=0; i<${#metadata[@]}; i++))
-    do
-        while true
-        do
-            echo "Enter the value for ${metadata[$i]}"
-            read value
-            if [[ "${col_types[$i]}" == "integer" && ! "$value" =~ [^0-9]+$ ]] ||
-               [[ "${col_types[$i]}" == "string" && ! "$value" =~ [^a-zA-Z0-9_] ]];
-               then
-                entry_values+=("$value")
-                clear
-                break
-            else
-                echo "Invalid value. Please enter a valid value."
-            fi
+YELLOW=$'\e[1;33m'
+defaultcolor=$'\e[0m'
+PS3="$YELLOW$1$defaultcolor >"
+dirloc=$1
+
+echo -e "\e[34m---------------------- Tables List -------------------------\e[0m"
+ls -p | grep -v /
+echo -e "\e[34m------------------------------------------------------------\e[0m"
+
+read -p "Enter the table name to Insert (or '0' to back): " tablename
+
+if [[ $tablename == "0" ]]; then
+    clear
+    cd ../../
+    . table-menu.sh $dirloc
+fi
+
+if [ -e "$tablename" ]; then
+    clear
+    num_columns=$(awk -F':' 'NR==1{print NF}' "$tablename")
+    echo -e "Columns number: \e[93m$num_columns\e[0m"
+
+    line_number=$(( $(awk -F':' 'END{print $1}' "$tablename") + 1))
+    echo -n "$line_number:" >>"$tablename"
+
+    for ((i = 2; i <= num_columns; i++)); do
+        column_name=$(awk -F':' -v col="$i" 'NR==1{print $col}' "$tablename")
+        data_type=$(awk -F':' -v col="$i" 'NR==2{print $col}' "$tablename")
+
+        while true; do
+            read -p "Enter data for [$column_name] column ($data_type): " data
+
+            case $data_type in
+                int)
+                    if [[ "$data" =~ ^[0-9]+$ ]]; then
+                        break
+                    else
+                        echo -e "\e[91mInvalid data. Expected an integer.\e[0m"
+                    fi
+                    ;;
+                str)
+                    if [[ "$data" =~ ^[a-zA-Z]+$ ]]; then
+                        break
+                    else
+                        echo -e "\e[91mInvalid data. Expected a string with no spaces.\e[0m"
+                    fi
+                    ;;
+                *)
+                    echo -e "\e[91mInvalid data type.\e[0m"
+                    ;;
+            esac
         done
+
+        echo -n "$data" >>"$tablename"
+
+        [ "$i" -lt "$num_columns" ] && echo -n ":" >>"$tablename"
     done
-    new_entry="${entry_values[*]}"
-    echo "$new_entry" >> "$name"
-    echo "Data inserted successfully."
-    break
-done
-cd ../../
-. table-menu.sh
+
+    echo "" >>"$tablename"
+
+    echo -e "\e[92mData added successfully! with ID: $line_number\e[0m"
+    cd ../../
+    . table-menu.sh
+else
+    echo -e "\e[91mTable doesn't exist.\e[0m"
+    cd ../../
+    . table-menu.sh
+fi
+

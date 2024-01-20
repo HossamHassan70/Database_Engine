@@ -10,9 +10,9 @@ Wrote and interpreted with Bash
   - [About](#about)
   - [Features](#features)
   - [Getting Started](#getting-started)
-    - [Installation](#installation)
   - [Contributors:](#contributors)
   - [References:-](#references-)
+    - [Installation](#installation)
 
 ## About
 
@@ -39,12 +39,13 @@ databases, tabels, remove database, tables ...
 Follow these instructions to get the project up and running on your local machine.
 
 ## Contributors:
-* **[Hossam Hassan]**(https://github.com/HossamHassan70)
+* **[Hossam Hassan]**    (https://github.com/HossamHassan70)
 * **[Amany Abdelrahman]**(https://github.com/amany-abdelrahman)
 
 ## References:-
-1- https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
-2- https://en.wikipedia.org/wiki/ANSI_escape_code
+
+- https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+- https://en.wikipedia.org/wiki/ANSI_escape_code
 
 
 ### Installation

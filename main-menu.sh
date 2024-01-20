@@ -1,13 +1,15 @@
 #!/bin/bash
 
 currentlocation=$(pwd)
-echo $(PATH="$PATH":$currentlocation) >>~/.bashrc
+echo $(PATH="$PATH":"$currentlocation") >>~/.bashrc
 # check if there are file named DB or not to create it
 if [[ ! -d "DB" ]]; then
     mkdir "./DB"
 fi
-
-echo -e "\e[95mHello From Our Database Engine, Enjoy..\e[0m"
+clear
+echo -e "\e[94m-------------------------------------------------------\e[0m"
+echo -e "\e[95m          Hello From Our Database Engine ...     \e[0m"
+echo -e "\e[94m-------------------------------------------------------\e[0m"
 PS3="Type Your Selection: "
 
 select option in "Create Database" "List Databases" "Connect to Database" "Drop Database" "Exit"; 
@@ -57,13 +59,15 @@ do
         # in this line below '-z' checks if the result string (output of command) is empty
         # and '-A' to ignore . .. we don't need to them in this case
         if [ -z "$(ls -A DB)" ]; then
-            echo -e "\e[93mThere are No Databases Right Now ...\e[0m"
+            echo -e "\e[93mThere are No Databases Available Right Now ...\e[0m"
         else
             ls -F DB | grep / | tr '/' ' '
         fi
         echo -e "\e[34m---------------------------------------------------------------\e[0m"
-        . main-menu.sh
-
+        read -p "Press '0' to go back : " var
+        if [[ $var == "0" ]]; then
+            . main-menu.sh
+        fi
         ;;
     3)
         clear
@@ -81,6 +85,7 @@ do
             . main-menu.sh
         fi
         if [[ -d DB/$name ]]; then
+            clear
             echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
             . table-menu.sh $name
         else
