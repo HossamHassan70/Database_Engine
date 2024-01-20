@@ -1,26 +1,35 @@
 #!/usr/bin/bash
+
 regex="^[a-zA-Z][a-zA-Z0-9_]*$"
-read -p "Enter name of a new table: " name
-if [ -f "$name" ]; then
-    echo "Sorry, you entered an existing table"
+read -p "Enter name of a new table (or '0' to back): " name
+if [[ $name == "0" ]]; then
+    clear
+    cd ../../
     . table-menu.sh
-elif [[ -z "$name" ]] || ! [[ "$name" =~ $regex ]]; then
-    echo "Sorry, you entered an invalid name."
-    . table-menu.sh
+fi
+if [[ ${#name} -gt 1 ]]; then
+    if [ -f "$name" ]; then
+        echo "Sorry, you entered an existing table"
+        . table-menu.sh
+    elif [[ -z "$name" ]] || ! [[ "$name" =~ $regex ]]; then
+        echo "Sorry, you entered an invalid name."
+        . table-menu.sh
+    else
+        touch "$name"
+        echo "Table created successfuly"
+    fi
 else
-    touch "$name"
-    echo "Table created successfuly"
+    echo -e "\e[91mError: Invalid Table Name (should be more than one character)\e[0m"
+    . table-menu.sh
 fi
 clear
 while true 
 do  
-    echo "Enter the number of fields: " 
+    echo -e "Enter the number of fields of \e[93m[$name]\e[0m: " 
     read num
-    if [[ $num -eq 0 ]] 
-    then
+    if [[ $num -eq 0 ]]; then
         echo "You can't enter $num as a number of fields."
-    elif [[ $num =~ ^[1-9][0-9]*$ ]]
-    then
+    elif [[ $num =~ ^[1-9][0-9]*$ ]]; then
         echo "Number of fields: $num"
         break
     else
@@ -28,7 +37,7 @@ do
     fi 
 done
 echo "Now you can enter metadata for your table :)"
-echo "Let your primary key to be the first column"
+echo "Your primary key Must be the first column"
 rowtype=""
 pk_column=""
 declare -A column_names
@@ -38,15 +47,21 @@ do
     while true
     do 
         read -p "Name of column number $i is: " cname
-        while [[ -z "$cname" ]] || [[ -n "${column_names[$cname]}" ]]
-        do
-            if [[ -n "${column_names[$cname]}" ]]; then
-                echo "This column name already exists. Please enter a different name."
-            else
-                echo "Name can't be empty, please enter valid name"
-            fi
-            read cname
-        done
+        # check if cname value in column_name or not
+        if [[ "${column_names[@]}" =~ "$cname" ]]; then
+            echo "This name has already been used. Try another one."
+            continue
+        fi
+        column_names+=("$cname") 
+        # while [[ -z "$cname" ]] || [[ -n "${column_names[$cname]}" ]]
+        # do
+        #     if [[ -n "${column_names[$cname]}" ]]; then
+        #         echo "This column name already exists. Please enter a different name."
+        #     else
+        #         echo "Name can't be empty, please enter valid name"
+        #     fi
+        #     # read cname
+        # done
         column_names["$cname"]=1
         if [[ $cname =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
             if [[ $i -eq 1 ]]; then
@@ -89,8 +104,10 @@ echo "Metadata of your table is: $rowtype"
             echo "Primary key does not added."
             ;;
         *)
-            echo "Invalid choice. Please enter 'yes' or 'no'."
+            echo -e "\e[91mInvalid choice. Please enter 'yes' or 'no'.\e[0m"
+            rm -r $name 
+            echo -e "\e[91mThe Table [$name] will be deleted, Try Again\e[0m"
+            . create-table.sh
             ;;
     esac
-clear
 . table-menu.sh

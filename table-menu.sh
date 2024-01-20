@@ -9,35 +9,39 @@ select choice in Create-table List-tables Drop-table Insert-in-table Select-from
 do
    case $REPLY in
       1)
-      echo "You can create table now"
+      echo -e "\e[34m---------------------- Create Table ------------------------\e[0m"
+      cd DB/$1
       . create-table.sh 
       ;;
       2)
-      echo "You can listing tables now"
+      echo -e "\e[34m---------------------- List Table --------------------------\e[0m"
+      cd DB/$1
       . list-tables.sh
       ;;
       3)
-      echo "You can drop the table you want now"
+      echo -e "\e[34m---------------------- Drop Table --------------------------\e[0m"
+      cd DB/$1
       . drop-table.sh
       ;;
       4)
-      echo "You can insert in table now"
+      echo -e "\e[34m------------------ Insert Into Table -----------------------\e[0m"
+      cd DB/$1
       . insert-in-table.sh
       ;;
       5)
-      echo "You can select from table now" 
+      echo -e "\e[34m------------------- Select From Table ----------------------\e[0m"
       . select-from-table.sh
       ;;
       6)
-      echo "You can update table"
+      echo -e "\e[34m---------------------- Update Table ------------------------\e[0m"
       . update-table.sh
       ;;
       7)
-      echo "You can remove from table"
+      echo -e "\e[34m------------------ Remove From Table -----------------------\e[0m"
       . remove-from-table.sh
       ;;
       8)
-         echo -e "\e[93mBack to Main Menu\e[0m"
+         echo -e "\e[93m------------------ Back to Main Menu --------------------\e[0m"
          . main-menu.sh
          ;;
       * )

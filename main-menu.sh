@@ -98,7 +98,11 @@ do
             ls -F DB | grep / | tr '/' ' '
         fi
         echo -e "\e[34m--------------------------------------------------------------\e[0m"
-        read -p "Enter database Name: " name
+        read -p "Enter database Name or '0' to go back : " name
+        if [[ $name == "0" ]]; then
+            clear
+            . main-menu.sh
+        fi
         if [[ -d DB/$name ]]; then
             read -p "Are You Sure you want to delete [$name] (y/n)? " answer 
             if [[ $answer == [yY] ]]; then

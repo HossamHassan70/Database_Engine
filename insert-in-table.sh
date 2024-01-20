@@ -2,6 +2,9 @@
 validation_table_name() {
     while true
     do
+        echo -e "\e[34m---------------------- Tables List -------------------------\e[0m"
+        ls -p | grep -v / 
+        echo -e "\e[34m------------------------------------------------------------\e[0m"
         echo "Enter the name of the table you want to insert data into: "
         read name
         if [ -f "$name" ]
@@ -55,4 +58,5 @@ do
     echo "Data inserted successfully."
     break
 done
+cd ../../
 . table-menu.sh
