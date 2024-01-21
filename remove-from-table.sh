@@ -15,37 +15,55 @@
     #start a loop to let user select from their options
     select choice in Delete-all Delete-row
     do 
-    case $choice in 
-    Delete-all ) 
-        #use sed to delete all rows that start with digits to avoid to delete the metadata
-        sed -i '/^[[:digit:]]/d' $name
-        echo "You delete the data from $name successfully"
+    case $REPLAY in 
+    1 )
+    echo "are you sure to delete all data in table"
+    select choice in "yes" "no"
+    do
+    case $REPLY in 
+    1)
+    sed -i '/^[[:digit:]]/d' $name
+    echo "You delete the data from $name successfully"
+    . table-menu.sh
     ;;
-    Delete-row )
-        while true 
-        do 
-        #prompt user to enter the primary key of the row to be deleted
-        echo "Enter the primary key of the row: " 
-        read pk_column
-        #use awk to find the row in the table that matches the entered primary key
-        row=`awk -F':' '{ if ($1=='$pk_column') print $0}' $name`
-        #check if the row with the entered primary key exists in the table or not
-        if grep -Fxq "$row" "$name" &>~/../../dev/null;
-        then
-        #delete the row with the entered primary key from the table
-        sed -i '/'$row'/d' $name
-        echo "You deleted the row successfullt"
-        break
-        else
-        echo "The primary key is not exist"
-        continue
-        fi
-        done 
-        break
-    ;;
-    * )
-       echo "Pleace enter a valid choice"
-       continue
+    2)
+    . table-menu.sh
     ;;
     esac
     done
+    2)
+       read -p "enter the Id of the record you want to delete : " id
+       while ! [[ $id =~ ^[0-9]*$ ]] || [[ $id =~ ['!@#$%^&*():_+'] ]] || [[ $id == "" ]] || [[ $id =~ [a-zA-z] ]]
+       do
+       echo  "Invalid value for the id! enter your value again"
+       read id
+       done
+        if [ `awk '(NR>2)' "$name"  | awk -F : ' {print $1}'| grep $id ` ]; then
+        echo "Are you sure you want to delete this record $id"
+        select choice in "Yes" "No"
+        do 
+        case $REPLY in
+        1)
+        `sed -i '/^'$id'/ d' "$name"`;
+        echo "record was deleted successfully";
+        ;;
+        2)
+        . table-menu.sh
+        ;;
+        *) 
+        echo "Invalid choice"
+        ;;
+        esac
+        done
+        else 
+        echo "There is no record with ID : $id"
+        . table-menu.sh
+        fi
+        esac
+        done
+       * )
+       echo "Invalid choice"
+       continue
+       ;;
+      esac
+      done
