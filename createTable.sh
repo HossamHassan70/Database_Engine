@@ -5,22 +5,22 @@ regex="^[a-zA-Z][a-zA-Z0-9_]{0,14}$"
 read -p "Enter name of a new table (or '0' to back): " name
 if [[ $name == "0" ]]; then
     clear
-    . table-menu.sh
+    . tableMenu.sh
 fi
 name=$(echo "$name" | sed 's/[^a-zA-Z0-9_ ]//g' | tr " " "_")
 if [[ ${#name} -gt 1 ]] && [[ ${#name} -le 16 ]]; then
     if [ -f "$name" ]; then
         echo -e "\e[91mSorry, you entered an existing table\e[0m"
-        . table-menu.sh
+        . tableMenu.sh
     elif [[ -z "$name" ]] || [[ ! "$name" =~ $regex ]]; then
         echo -e "\e[91mSorry, you entered an invalid name\e[0m"
-        . table-menu.sh
+        . tableMenu.sh
     else
         touch "$name"
     fi
 else
     echo -e "\e[91mError: Invalid Table Name (should be more than one character)\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 fi
 clear
 echo -e "\e[92mTable \e[93m[$name] \e[92mcreated successfuly\e[0m"
@@ -91,4 +91,4 @@ echo -e "\e[94m------------------------------------------------------------\e[0m
 echo -e "\e[92mTable Metadata added to \e[93m[$name] \e[92mSuccessfully\e[0m"
 echo -e "\e[94m------------------------------------------------------------\e[0m"
 
-. table-menu.sh
+. tableMenu.sh

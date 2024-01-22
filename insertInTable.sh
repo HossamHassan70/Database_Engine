@@ -13,7 +13,7 @@ read -p "Enter the table name to Insert (or '0' to back): " tablename
 
 if [[ $tablename == "0" ]]; then
     clear
-    . table-menu.sh $dirloc
+    . tableMenu.sh $dirloc
 fi
 
 if [ -e "$tablename" ]; then
@@ -60,9 +60,9 @@ if [ -e "$tablename" ]; then
     echo "" >>"$tablename"
 
     echo -e "\e[92mData added successfully! with ID: $line_number\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 else
     echo -e "\e[91mTable doesn't exist.\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 fi
 

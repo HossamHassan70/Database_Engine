@@ -17,7 +17,7 @@ if [ -e "$tablename" ]; then
             echo -e "\e[34m-------------------- Selected Table -----------------------\e[0m"
             awk 'NR!=2' "$tablename" | tr ":" " " | column -t
             echo -e "\e[34m------------------------------------------------------------\e[0m"
-            . table-menu.sh
+            . tableMenu.sh
             ;;
         2)
             clear
@@ -30,7 +30,7 @@ if [ -e "$tablename" ]; then
                 }
             ' "$tablename" | column -t
             echo -e "\e[34m------------------------------------------------------------\e[0m"
-            . table-menu.sh
+            . tableMenu.sh
             ;;
         3)
             clear
@@ -47,14 +47,14 @@ if [ -e "$tablename" ]; then
                 }' "$tablename")
             if [ -z "$field_number" ]; then
                 echo -e "\e[91mError: Column '$search_column' not found in '$tablename' table.\e[0m"
-                . table-menu.sh
+                . tableMenu.sh
             else
                 awk -F: -v field="$field_number" 'NR!=2 { print $field }' "$tablename"
-                . table-menu.sh
+                . tableMenu.sh
             fi
             ;;
         4)
-            . table-menu.sh
+            . tableMenu.sh
             ;;
         *)
             echo -e "\e[91mInvalid option. Please try again.\e[0m"
@@ -63,5 +63,5 @@ if [ -e "$tablename" ]; then
     done
 else
     echo -e "\e[91mTable doesn't exist.\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 fi

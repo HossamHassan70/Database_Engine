@@ -22,7 +22,7 @@ do
         read -p "Enter a Name of DB: " name
         if [[ $name == "0" ]]; then
             clear
-            . main-menu.sh
+            . mainMenu.sh
         fi
 
         if [[ ! "$name" =~ ^[0-9] ]] || [[ ! "$name" =~ ['.@!#$%^&*()-'] ]]; then
@@ -33,21 +33,21 @@ do
             if [[ ${#name} -gt 1 ]]; then
                 if [[ -e DB/$name ]]; then
                     echo -e "\e[91mError: This Database is already exists.\e[0m"
-                    . main-menu.sh
+                    . mainMenu.sh
                 else
                     mkdir "$database_path"
                     echo -e "\e[92m[$name] Database Created Successfully.\e[0m"
                     echo -e "\e[92m Conected to [$name] Database ...\e[0m"
                     cd DB/$name
-                    . table-menu.sh $name
+                    . tableMenu.sh $name
                 fi
             else
                 echo -e "\e[91mError: Please enter a valid name (should be more than one character)\e[0m"
-                . main-menu.sh
+                . mainMenu.sh
             fi
         else
             echo -e "\e[91mError: Invalid Input (should start with a letter not a number)\e[0m"
-            . main-menu.sh
+            . mainMenu.sh
         fi
 
         echo -e "\e[34m--------------------------------------------------------\e[0m"
@@ -66,10 +66,10 @@ do
         echo -e "\e[34m---------------------------------------------------------------\e[0m"
         read -p "Type any key to go back : " var
         if [[ $var == "0" ]]; then
-            . main-menu.sh
+            . mainMenu.sh
         else
             echo -e "\e[93mInvalid Input, Redirect to Main Menu\e[0m"
-            . main-menu.sh
+            . mainMenu.sh
         fi
         ;;
     3)
@@ -77,7 +77,7 @@ do
         echo -e "\e[34m----------------- Connect to a database -----------------------\e[0m"
         if [ -z "$(ls -A DB)" ]; then
             echo -e "\e[93mThere are No Databases Right Now .. Please Add it First.\e[0m"
-            . main-menu.sh
+            . mainMenu.sh
         else
             ls -F DB | grep / | tr '/' ' '
         fi
@@ -85,18 +85,18 @@ do
         read -p "Enter a Database Name To Connect (or '0' to back): " name
         if [[ $name == "0" ]]; then
             clear
-            . main-menu.sh
+            . mainMenu.sh
         fi
         if [[ ! $name =~ ['.@!#$%^&*()-+<>~'] ]];then 
             if [[ -d DB/$name ]]; then
                 clear
                 echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
                 cd DB/$name
-                . table-menu.sh $name
+                . tableMenu.sh $name
             fi
         else
             echo -e "\e[91mError: Database is not found.\e[0m"
-            . main-menu.sh
+            . mainMenu.sh
         fi
         ;;
     4)
@@ -104,7 +104,7 @@ do
         echo -e "\e[34m-------------------------Drop Database----------------------\e[0m"
         if [ -z "$(ls -A DB)" ]; then
             echo -e "\e[93mThere are No Databases Available Right Now ...\e[0m"
-            . main-menu.sh
+            . mainMenu.sh
         else
             ls -F DB | grep / | tr '/' ' '
         fi
@@ -112,7 +112,7 @@ do
         read -p "Enter database Name or '0' to go back : " name
         if [[ $name == "0" ]]; then
             clear
-            . main-menu.sh
+            . mainMenu.sh
         fi
         if [[ -d DB/$name ]]; then
             read -p "Are You Sure you want to delete [$name] (y/n)? " answer 
@@ -120,18 +120,18 @@ do
                 rm -r DB/$name
                 echo -e "\e[92mDatabase [$name] Deleted Successfully.\e[0m"
                 echo -e "\e[34m--------------------------------------------------------------\e[0m"
-                . main-menu.sh
+                . mainMenu.sh
             elif [[ $answer == [nN] ]]; then
-                . main-menu.sh
+                . mainMenu.sh
             else
                 echo "Invalid Input Please Try Again ..."
-                . main-menu.sh
+                . mainMenu.sh
             fi
         else
             echo -e "\e[91mError: Database not found.\e[0m"
         echo -e "\e[34m--------------------------------------------------------------\e[0m"
         fi
-            . main-menu.sh
+            . mainMenu.sh
         ;;
     5)
         echo -e "\e[93mSee You Later ..\e[0m"
@@ -139,7 +139,7 @@ do
         ;;
     *)
         echo -e "\e[91mInvalid option. Please try again.\e[0m"
-        . main-menu.sh
+        . mainMenu.sh
         ;;
     esac
 done

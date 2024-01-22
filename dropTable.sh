@@ -6,7 +6,7 @@ echo -e "\e[34m-----------------------------------------------------------\e[0m"
 read -p "Enter The Name Table Want to Drop (or '0' to back): " droptable
 if [[ $droptable == "0" ]]; then
     clear
-    . table-menu.sh
+    . tableMenu.sh
 fi
 if [[ -f $droptable ]];then
     read -p "Are You Sure you want to delete [$droptable] (y/n)? " answer 
@@ -14,15 +14,15 @@ if [[ -f $droptable ]];then
         rm -r $droptable
         echo -e "\e[92mTable [$droptable] Deleted Successfully.\e[0m"
         echo -e "\e[34m--------------------------------------------------------------\e[0m"
-        . table-menu.sh
+        . tableMenu.sh
     elif [[ $answer == [nN] ]]; then
-        . table-menu.sh
+        . tableMenu.sh
     else
         echo "Invalid Input Please Try Again ..."
-        . table-menu.sh
+        . tableMenu.sh
     fi
 else
     echo -e "\e[91m[$droptable]!, this table is not found\e[0m"
     echo -e "\e[34m--------------------------------------------------------------\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 fi

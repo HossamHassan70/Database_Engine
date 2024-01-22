@@ -68,11 +68,11 @@ if [ -e "$tablename" ]; then
                     echo -e "\e[31mValue '$value_toUpdate' does not exist in column '$col_name'.\e[0m"
                 fi
             fi
-            . table-menu.sh
+            . tableMenu.sh
             ;;
         2)
             clear
-            . table-menu.sh
+            . tableMenu.sh
             ;;
 
         *)
@@ -82,5 +82,5 @@ if [ -e "$tablename" ]; then
     done
 else
     echo -e "\e[31mError: There is no table named $tablename.\e[0m"
-    . table-menu.sh
+    . tableMenu.sh
 fi

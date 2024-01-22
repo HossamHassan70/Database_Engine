@@ -8,7 +8,7 @@ do
     echo -e "\e[94mEnter Name of the table to Remove From or '0' to back: \e[0m"
     read name
     if [[ $name == "0" ]]; then
-        . table-menu.sh
+        . tableMenu.sh
         break
     fi
     #check if the entered table name is exist or not
@@ -30,14 +30,14 @@ do
             1)
                 sed -i '/^[[:digit:]]/d' $name
                 echo -e "\e[92mYou delete the data from [$name] successfully\e[0m"
-                . table-menu.sh
+                . tableMenu.sh
                 ;;
             2)
-                . table-menu.sh
+                . tableMenu.sh
                 ;;
             *)
                 echo -e "\e[91mInvalid choice\e[0m"
-                . table-menu.sh
+                . tableMenu.sh
                 ;;
             esac
         done
@@ -49,7 +49,7 @@ do
             echo -e "\e[91mInvalid input, Please try again or type 'back' to return\e[0m"
             if [[ $id == "back" ]]; then
                 break
-                . table-menu.sh
+                . tableMenu.sh
             fi
             read id
         done
@@ -60,11 +60,11 @@ do
                 1)
                     $(sed -i '/^'$id'/ d' "$name")
                     echo -e "\e[92mRecord was deleted successfully\e[0m"
-                    . table-menu.sh
+                    . tableMenu.sh
                     ;;
                 2)
                     break
-                    . table-menu.sh
+                    . tableMenu.sh
                     ;;
                 *)
                     echo "Invalid choice"
@@ -74,12 +74,12 @@ do
             done
         else
             echo -e "\e[33mThere are No record with ID : $id\e[0m"
-            . table-menu.sh
+            . tableMenu.sh
         fi
         ;;
     *)
         echo -e "\e[33mInvalid choice\e[0m"
-        . table-menu.sh
+        . tableMenu.sh
         ;;
     esac
 done
