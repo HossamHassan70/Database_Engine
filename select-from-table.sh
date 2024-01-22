@@ -1,66 +1,67 @@
-#!/usr/bin/bash
-validation_table_name() {
-    while true
-    do
-        echo "Enter the name of the table you want to select data from: "
-        read name
-        if [ -f "$name" ]
-        then
-            break
-        else
-            echo "Table $name does not exist. Please enter an existing table name."
-        fi
-    done
-}
-get_metadata() {
-    local columns=$(head -n 1 "$name")
-    metadata=($(echo $columns | tr ',' ' '))
-}
-validation_table_name
+#!/bin/bash
 
-while true
-do
-    PS3="Enter the number you want to choose from this menu: "
-    options=("Select-All" "Select data by column" "Select a specific column of the table" "Exit")
-    select choice in "${options[@]}"
-    do
-        case $choice in
-            "Select-All" )
-            #display all rows(starting from the third line) from the entered table using sed
-                sed -n '3,$p' "$name"
+brightYellow=$'\e[1;93m'
+defaultcolor=$'\e[0m'
+echo -e "\e[34m---------------------- Tables List -------------------------\e[0m"
+ls -p . | grep -v / 
+echo -e "\e[34m------------------------------------------------------------\e[0m"
+
+read -p "Enter the name of table to select from it: " tablename
+if [ -e "$tablename" ]; then
+    PS3="$brightYellow$tablename$defaultcolor > "
+    clear
+    select option in "Select All" "Select by ID" "Select by column" "Back to previous menu"; do
+        case $REPLY in
+        1)
+            clear
+            echo -e "\e[34m-------------------- Selected Table -----------------------\e[0m"
+            awk 'NR!=2' "$tablename" | tr ":" " " | column -t
+            echo -e "\e[34m------------------------------------------------------------\e[0m"
+            . table-menu.sh
             ;;
-            "Select data by column" )
-                get_metadata
-                echo "Enter the primary key value:"
-                read pk_value
-                #use awk to filter rows where the first column matches the entered primary key value
-                awk -F, -v pk="$pk_value" '$1 == pk' "$name"
-                read -p "Press Enter to continue..."
+        2)
+            clear
+            read -p "Enter the ID to search: " search_id
+
+            awk -v search_id="$search_id" -v IGNORECASE=1 '
+                /^([Ii][Dd]|'"$search_id"')/ {
+                    gsub(":", " ", $0);
+                    print $0;
+                }
+            ' "$tablename" | column -t
+            echo -e "\e[34m------------------------------------------------------------\e[0m"
+            . table-menu.sh
             ;;
-            "Select a specific column of the table" )
-                get_metadata
-                echo "Choose a column to select:"
-                select option in "${metadata[@]}"
-                do
-                    #get the column number for the selected column name
-                    if [[ -n "$option" ]]; then
-                        #use grep to searche for the selected column name in the array and extract it
-                        #use awk to print the number of fields (column number) 
-                        column_number=$(echo "${metadata[@]}" | grep -o "\<$option\>" | awk '{print NF}')
-                        awk -F, -v col_number="$column_number" '{print $col_number}' "$name"
-                        break
-                    else
-                        echo "Invalid selection. Please choose a valid column."
-                    fi
-                done
+        3)
+            clear
+            # print the first row of the table using awk
+            colname=$(awk -F: 'NR==1 {print $0}' "$tablename" | tr ":" " ")
+            echo $colname
+            echo -e "\e[34m------------------------------------------------------------\e[0m"
+            read -p "Enter a column name: " search_column
+            field_number=$(awk -F: -v word="$search_column" '{
+                for(i=1; i<=NF; i++)
+                if($i == word)
+                print i;
+                exit
+                }' "$tablename")
+            if [ -z "$field_number" ]; then
+                echo -e "\e[91mError: Column '$search_column' not found in '$tablename' table.\e[0m"
+                . table-menu.sh
+            else
+                awk -F: -v field="$field_number" 'NR!=2 { print $field }' "$tablename"
+                . table-menu.sh
+            fi
             ;;
-            "Exit" )
-                echo "Exiting SELECT operation."
-                exit 0
+        4)
+            . table-menu.sh
             ;;
-            * )
-                echo "Invalid option. Please choose a valid option."
+        *)
+            echo -e "\e[91mInvalid option. Please try again.\e[0m"
             ;;
         esac
     done
-done
+else
+    echo -e "\e[91mTable doesn't exist.\e[0m"
+    . table-menu.sh
+fi

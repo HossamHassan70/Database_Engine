@@ -13,6 +13,7 @@ Wrote and interpreted with Bash
   - [Contributors:](#contributors)
   - [References:-](#references-)
     - [Installation](#installation)
+- [After This Step you can call file by Name Only like this:](#after-this-step-you-can-call-file-by-name-only-like-this)
 
 ## About
 
@@ -46,6 +47,12 @@ Follow these instructions to get the project up and running on your local machin
 
 - https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 - https://en.wikipedia.org/wiki/ANSI_escape_code
+- https://www.regular-expressions.info/posixbrackets.html
+- https://www.ibm.com/docs/hr/aix/7.2?topic=awk-command
+- https://devhints.io/bash
+- https://linuxconfig.org/bash-scripting-tutorial
+- https://en.wikipedia.org/wiki/Database_engine
+  
 
 
 ### Installation
@@ -56,3 +63,5 @@ Clone the repository and navigate to the project directory:
 $ git clone https://github.com/HossamHassan70/Database_Engine.git
 $ cd Database_Engine
 $ ./main-menu.sh
+# After This Step you can call file by Name Only like this:
+$ main-menu.sh 

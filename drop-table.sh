@@ -6,7 +6,6 @@ echo -e "\e[34m-----------------------------------------------------------\e[0m"
 read -p "Enter The Name Table Want to Drop (or '0' to back): " droptable
 if [[ $droptable == "0" ]]; then
     clear
-    cd ../../
     . table-menu.sh
 fi
 if [[ -f $droptable ]];then
@@ -23,7 +22,7 @@ if [[ -f $droptable ]];then
         . table-menu.sh
     fi
 else
-    echo -e "\e[91m$droptable !, this table is not found\e[0m"
+    echo -e "\e[91m[$droptable]!, this table is not found\e[0m"
     echo -e "\e[34m--------------------------------------------------------------\e[0m"
     . table-menu.sh
 fi

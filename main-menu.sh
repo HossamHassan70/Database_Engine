@@ -10,6 +10,7 @@ clear
 echo -e "\e[94m-------------------------------------------------------\e[0m"
 echo -e "\e[95m          Hello From Our Database Engine ...     \e[0m"
 echo -e "\e[94m-------------------------------------------------------\e[0m"
+
 PS3="Type Your Selection: "
 
 select option in "Create Database" "List Databases" "Connect to Database" "Drop Database" "Exit"; 
@@ -31,14 +32,14 @@ do
             # In the line below the '#' key before name variable, to gives you the length of
             #   the string (Number of characters)
             if [[ ${#name} -gt 1 ]]; then
-                if [[ -e "$database_path" ]]; then
+                if [[ -e DB/$name ]]; then
                     echo -e "\e[91mError: This Database is already exists.\e[0m"
                     . main-menu.sh
                 else
                     mkdir "$database_path"
                     echo -e "\e[92m[$name] Database Created Successfully.\e[0m"
                     echo -e "\e[92m Conected to [$name] Database ...\e[0m"
-                    cd $database_path
+                    cd DB/$name
                     . table-menu.sh $name
                 fi
             else
@@ -55,17 +56,21 @@ do
         ;;
     2)
         clear
+        echo "DB/$name"
         echo -e "\e[34m---------------------- Databases List -------------------------\e[0m"
         # in this line below '-z' checks if the result string (output of command) is empty
         # and '-A' to ignore . .. we don't need to them in this case
-        if [ -z "$(ls -A DB)" ]; then
+        if [ -z "$(ls -A DB/)" ]; then
             echo -e "\e[93mThere are No Databases Available Right Now ...\e[0m"
         else
-            ls -F DB | grep / | tr '/' ' '
+            ls -F DB/ | grep / | tr '/' ' '
         fi
         echo -e "\e[34m---------------------------------------------------------------\e[0m"
-        read -p "Press '0' to go back : " var
+        read -p "Type any key to go back : " var
         if [[ $var == "0" ]]; then
+            . main-menu.sh
+        else
+            echo -e "\e[93mInvalid Input, Redirect to Main Menu\e[0m"
             . main-menu.sh
         fi
         ;;
@@ -87,6 +92,7 @@ do
         if [[ -d DB/$name ]]; then
             clear
             echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
+            cd DB/$name
             . table-menu.sh $name
         else
             echo -e "\e[91mError: Database is not found.\e[0m"

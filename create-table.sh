@@ -5,25 +5,21 @@ regex="^[a-zA-Z][a-zA-Z0-9_]{0,14}$"
 read -p "Enter name of a new table (or '0' to back): " name
 if [[ $name == "0" ]]; then
     clear
-    cd ../../
     . table-menu.sh
 fi
 name=$(echo "$name" | sed 's/[^a-zA-Z0-9_ ]//g' | tr " " "_")
 if [[ ${#name} -gt 1 ]] && [[ ${#name} -le 16 ]]; then
     if [ -f "$name" ]; then
         echo -e "\e[91mSorry, you entered an existing table\e[0m"
-        cd ../../
         . table-menu.sh
     elif [[ -z "$name" ]] || [[ ! "$name" =~ $regex ]]; then
         echo -e "\e[91mSorry, you entered an invalid name\e[0m"
-        cd ../../
         . table-menu.sh
     else
         touch "$name"
     fi
 else
     echo -e "\e[91mError: Invalid Table Name (should be more than one character)\e[0m"
-    cd ../../
     . table-menu.sh
 fi
 clear
@@ -46,8 +42,7 @@ done
 echo -e "\e[33mNow you can enter metadata for your table\e[0m"
 echo "Your primary key is 'int' & Must be the first column"
 echo -e "\e[34m--------------------------------------------------------\e[0m"
-# rowtype=""
-read -p "Name of column number 1 is (Recommended be ID): " one_name
+read -p "Name of column number 1 is (Must be ID/id): " one_name
 echo -n "$one_name" >>"$name"
 echo -n ":" >>"$name"
 
@@ -58,7 +53,6 @@ do
         read -p "Name of column number $i is: " cname
         if [[ $cname =~ $regex ]]; then
             echo -n "$cname">>"$name"
-            # break
             if [ $i -lt $num ];then
                 echo -n ":" >>"$name"
             fi 
@@ -78,12 +72,10 @@ do
             case $REPLY in
             1)
                 echo -n ":int">>"$name"
-                # rowtype+=":integer"
                 break
                 ;;
             2)
                 echo -n ":str">>"$name"
-                # rowtype+=":string"
                 break
                 ;;
             *)
@@ -94,9 +86,9 @@ do
 done
 # this line to make a new line in table file 
 echo "" >>"$name"
+clear
 echo -e "\e[94m------------------------------------------------------------\e[0m"
 echo -e "\e[92mTable Metadata added to \e[93m[$name] \e[92mSuccessfully\e[0m"
 echo -e "\e[94m------------------------------------------------------------\e[0m"
 
-cd ../../
 . table-menu.sh
