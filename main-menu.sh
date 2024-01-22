@@ -1,7 +1,6 @@
 #!/bin/bash
 
-currentlocation=$(pwd)
-echo $(PATH="$PATH":"$currentlocation") >>~/.bashrc
+echo "PATH=\$PATH:$(pwd)" >>~/.bashrc
 # check if there are file named DB or not to create it
 if [[ ! -d "DB" ]]; then
     mkdir "./DB"
