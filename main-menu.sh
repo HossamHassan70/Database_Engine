@@ -5,7 +5,7 @@ echo "PATH=\$PATH:$(pwd)" >>~/.bashrc
 if [[ ! -d "DB" ]]; then
     mkdir "./DB"
 fi
-clear
+# clear
 echo -e "\e[94m-------------------------------------------------------\e[0m"
 echo -e "\e[95m          Hello From Our Database Engine ...     \e[0m"
 echo -e "\e[94m-------------------------------------------------------\e[0m"
@@ -25,7 +25,7 @@ do
             . main-menu.sh
         fi
 
-        if [[ ! "$name" =~ ^[0-9] ]]; then
+        if [[ ! "$name" =~ ^[0-9] ]] || [[ ! "$name" =~ ['.@!#$%^&*()-'] ]]; then
             name=$(echo $name | sed 's/[^a-zA-Z0-9 ]//g' | tr " " "_")
             database_path="DB/$name"
             # In the line below the '#' key before name variable, to gives you the length of
@@ -55,7 +55,6 @@ do
         ;;
     2)
         clear
-        echo "DB/$name"
         echo -e "\e[34m---------------------- Databases List -------------------------\e[0m"
         # in this line below '-z' checks if the result string (output of command) is empty
         # and '-A' to ignore . .. we don't need to them in this case
@@ -88,11 +87,13 @@ do
             clear
             . main-menu.sh
         fi
-        if [[ -d DB/$name ]]; then
-            clear
-            echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
-            cd DB/$name
-            . table-menu.sh $name
+        if [[ ! $name =~ ['.@!#$%^&*()-+<>~'] ]];then 
+            if [[ -d DB/$name ]]; then
+                clear
+                echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
+                cd DB/$name
+                . table-menu.sh $name
+            fi
         else
             echo -e "\e[91mError: Database is not found.\e[0m"
             . main-menu.sh
