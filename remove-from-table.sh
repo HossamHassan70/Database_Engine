@@ -29,41 +29,46 @@
     2)
     . table-menu.sh
     ;;
+    * )
+    echo "Invalid choice"
+    ;;
     esac
     done
+    ;;
     2)
-       read -p "enter the Id of the record you want to delete : " id
-       while ! [[ $id =~ ^[0-9]*$ ]] || [[ $id =~ ['!@#$%^&*():_+'] ]] || [[ $id == "" ]] || [[ $id =~ [a-zA-z] ]]
-       do
-       echo  "Invalid value for the id! enter your value again"
-       read id
-       done
-        if [ `awk '(NR>2)' "$name"  | awk -F : ' {print $1}'| grep $id ` ]; then
-        echo "Are you sure you want to delete this record $id"
-        select choice in "Yes" "No"
-        do 
-        case $REPLY in
-        1)
-        `sed -i '/^'$id'/ d' "$name"`;
-        echo "record was deleted successfully";
-        ;;
-        2)
-        . table-menu.sh
-        ;;
-        *) 
-        echo "Invalid choice"
-        ;;
-        esac
-        done
-        else 
-        echo "There is no record with ID : $id"
-        . table-menu.sh
-        fi
-        esac
-        done
-       * )
-       echo "Invalid choice"
-       continue
-       ;;
-      esac
-      done
+    read -p "enter the Id of the record you want to delete : " id
+    while ! [[ $id =~ ^[0-9]*$ ]] || [[ $id =~ ['!@#$%^&*():_+'] ]] || [[ $id == "" ]] || [[ $id =~ [a-zA-z] ]]
+    do
+    echo  "Invalid value for the id! enter your value again"
+    read id
+    done
+    if [ `awk '(NR>2)' "$name"  | awk -F : ' {print $1}'| grep $id ` ]; then
+    echo "Are you sure you want to delete this record $id"
+    select choice in "Yes" "No"
+    do 
+    case $REPLY in
+    1)
+    `sed -i '/^'$id'/ d' "$name"`;
+    echo "record was deleted successfully";
+    ;;
+    2)
+    . table-menu.sh
+    ;;
+    *) 
+    echo "Invalid choice"
+    ;;
+    esac
+    done
+    else 
+    echo "There is no record with ID : $id"
+    . table-menu.sh
+    fi
+    esac
+    done
+    ;;
+    * )
+    echo "Invalid choice"
+    continue
+    ;;
+    esac
+    done
