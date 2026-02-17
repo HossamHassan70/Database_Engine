@@ -28,7 +28,7 @@ do
         select choice in "yes" "no"; do
             case $REPLY in
             1)
-                sed -i '/^[[:digit:]]/d' $name
+                sed -i '/^[[:digit:]]/d' "$name"
                 echo -e "\e[92mYou delete the data from [$name] successfully\e[0m"
                 . tableMenu.sh
                 ;;
@@ -53,12 +53,12 @@ do
             fi
             read id
         done
-        if [ $(awk '(NR>2)' "$name" | awk -F: ' {print $1}' | grep $id) ]; then
+        if awk -F: -v id="$id" 'NR>2 && $1==id {found=1; exit} END{exit !found}' "$name"; then
             echo -e "\e[33mAre you sure you will delete this record (Yes\No) $id\e[0m"
             select choice in "Yes" "No"; do
                 case $REPLY in
                 1)
-                    $(sed -i '/^'$id'/ d' "$name")
+                    sed -i "/^${id}:/d" "$name"
                     echo -e "\e[92mRecord was deleted successfully\e[0m"
                     . tableMenu.sh
                     ;;
@@ -68,7 +68,7 @@ do
                     ;;
                 *)
                     echo "Invalid choice"
-                    . table-manu.sh
+                    . tableMenu.sh
                     ;;
                 esac
             done

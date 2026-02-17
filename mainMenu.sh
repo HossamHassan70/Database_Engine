@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "PATH=\$PATH:$(pwd)" >>~/.bashrc
+if ! grep -Fq "$(pwd)" ~/.bashrc 2>/dev/null; then
+    echo "PATH=\$PATH:$(pwd)" >>~/.bashrc
+fi
 # check if there are file named DB or not to create it
 if [[ ! -d "DB" ]]; then
     mkdir "./DB"
@@ -25,8 +27,8 @@ do
             . mainMenu.sh
         fi
 
-        if [[ ! "$name" =~ ^[0-9] ]] || [[ ! "$name" =~ ['.@!#$%^&*()-'] ]]; then
-            name=$(echo $name | sed 's/[^a-zA-Z0-9 ]//g' | tr " " "_")
+        if [[ "$name" =~ ^[a-zA-Z][a-zA-Z0-9_ ]*$ ]]; then
+            name=$(echo "$name" | sed 's/[^a-zA-Z0-9 ]//g' | tr " " "_")
             database_path="DB/$name"
             # In the line below the '#' key before name variable, to gives you the length of
             #   the string (Number of characters)
@@ -64,13 +66,8 @@ do
             ls -F DB/ | grep / | tr '/' ' '
         fi
         echo -e "\e[34m---------------------------------------------------------------\e[0m"
-        read -p "Type any key to go back : " var
-        if [[ $var == "0" ]]; then
-            . mainMenu.sh
-        else
-            echo -e "\e[93mInvalid Input, Redirect to Main Menu\e[0m"
-            . mainMenu.sh
-        fi
+        read -p "Press Enter to go back: " _
+        . mainMenu.sh
         ;;
     3)
         clear
@@ -93,6 +90,9 @@ do
                 echo -e "\e[92mConnected to \e[93m[$name] \e[92mDatabase\e[0m"
                 cd DB/$name
                 . tableMenu.sh $name
+            else
+                echo -e "\e[91mError: Database is not found.\e[0m"
+                . mainMenu.sh
             fi
         else
             echo -e "\e[91mError: Database is not found.\e[0m"

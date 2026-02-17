@@ -21,7 +21,8 @@ if [ -e "$tablename" ]; then
     num_columns=$(awk -F':' 'NR==1{print NF}' "$tablename")
     echo -e "Columns number: \e[93m$num_columns\e[0m"
 
-    line_number=$(( $(awk -F':' 'END{print $1}' "$tablename") + 1))
+    last_id=$(awk -F':' 'NR>2 && $1 ~ /^[0-9]+$/ {id=$1} END{print id+0}' "$tablename")
+    line_number=$((last_id + 1))
     echo -n "$line_number:" >>"$tablename"
 
     for ((i = 2; i <= num_columns; i++)); do
