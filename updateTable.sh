@@ -13,10 +13,10 @@ if [ -e "$tablename" ]; then
         1)
             clear
 
-            column_names=($(awk -F',' 'NR==1 {for (i=1; i<=NF; i++) print $i}' "$tablename"))
+            column_names=($(awk -F':' 'NR==1 {for (i=1; i<=NF; i++) print $i}' "$tablename"))
             echo -e "\e[94m---------------------- Table Columns --------------------------\e[0m"
             for ((i = 0; i < ${#column_names[@]}; i++)); do
-                echo "$column_names" | tr ":" " "
+                echo "${column_names[$i]}"
             done
             echo -e "\e[94m-------------------------------------------------------------\e[0m"
             read -p "Enter the name of the column to search in: " col_name
